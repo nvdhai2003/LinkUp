@@ -12,6 +12,7 @@ import {
   createComment,
   fetchPostDetails,
   removeComment,
+  removePost,
 } from "../../services/postService";
 import ScreenWrapper from "../../components/ScreenWrapper";
 import { hp, wp } from "../../helpers/common";
@@ -130,6 +131,21 @@ const PostDetails = () => {
       Alert.alert("Comment ", res.msg);
     }
   };
+
+  const onDeletePost = async (item) => {
+    let res = await removePost(post.id);
+    if (res.success) {
+      router.back();
+    } else {
+      Alert.alert("Post ", res.msg);
+    }
+  }
+
+  const onEditPost = async (item) => {
+    router.back();
+    router.push({ pathname: 'newPost', params: { ...item } });
+  }
+
   return (
     <ScreenWrapper bg="white">
       <View style={styles.container}>
@@ -144,6 +160,9 @@ const PostDetails = () => {
             router={router}
             hasShadow={false}
             showMoreIcon={false}
+            showDelete={true}
+            onDelete={onDeletePost}
+            onEdit={onEditPost}
           />
           {/* comments input */}
           <View style={styles.inputContainer}>

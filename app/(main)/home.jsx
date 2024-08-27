@@ -34,8 +34,28 @@ const Home = () => {
     if (payload.eventType == "INSERT" && payload?.new?.id) {
       let newPost = { ...payload.new };
       let res = await getUserData(newPost.userId);
+      newPost.postLikes = [];
+      newPost.comments = [{ count: 0 }];
       newPost.user = res.success ? res.data : {};
       setPosts((prevPosts) => [newPost, ...prevPosts]);
+    }
+    if (payload.eventType == 'DELETE' && payload.old.id) {
+      setPosts(prevPost => {
+        let updatePost = prevPost.filter(post => post.id != payload.old.id);
+        return updatePost;
+      })
+    }
+    if (payload.eventType == "UPDATE" && payload?.new?.id) {
+      setPosts(prevPost => {
+        let updatePost = prevPost.map(post => {
+          if (post.id == payload.new.id) {
+            post.body = payload.new.body;
+            post.file = payload.new.file;
+          }
+          return post;
+        })
+        return updatePost;
+      })
     }
   };
 
@@ -56,7 +76,7 @@ const Home = () => {
   }, []);
   const getPosts = async () => {
     if (!hasMore) return null;
-    limit = limit + 4;
+    limit = limit + 10;
     console.log("limit: ", limit);
     let res = await fetchPosts(limit);
     if (res.success) {
