@@ -55,6 +55,7 @@ const NewPost = () => {
       mediaConfig = {
         mediaTypes: ImagePicker.MediaTypeOptions.Videos,
         allowsEditing: true,
+
       };
     }
     let result = await ImagePicker.launchImageLibraryAsync(mediaConfig);

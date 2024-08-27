@@ -6,7 +6,7 @@ import Avatar from "./Avatar";
 import moment from "moment";
 import Icon from "../assets/icons";
 
-const CommentItem = ({ item, canDelete = false, onDelete = () => {} }) => {
+const CommentItem = ({ item, canDelete = false, onDelete = () => { }, highlight = false }) => {
   const createdAt = moment(item?.created_at).format("MMM D");
   const handleDelete = () => {
     Alert.alert("Confirm", "Are you sure you want to do this? ", [
@@ -25,7 +25,7 @@ const CommentItem = ({ item, canDelete = false, onDelete = () => {} }) => {
   return (
     <View style={styles.container}>
       <Avatar uri={item?.user?.image} />
-      <View style={styles.content}>
+      <View style={[styles.content, highlight && styles.highlight]}>
         <View
           style={{
             flexDirection: "row",
